@@ -35,10 +35,10 @@ The application can be added to the desktop environment's application menu by ed
 
 *Note: it is possible to run multiple instances of OctoPrint-Desktop for multiple instances of OctoPrint. Create separate configuration files and use the `--config` command line argument. You can also create multiple desktop files and name them appropriately.*
 
-Once the desktop file and created, the DE can be configured to automatically start OctoPrint-Desktop on startup/login.
+Once the desktop file is created, the DE can be configured to automatically start OctoPrint-Desktop on startup/login.
 
 # Configuration
-By default, the program will look for a configuration file named `octoprint-deskopt.json` in the user's home directory. This can be overriden with the command line argument `--file`, ie. `--file=/path/to/some.json`.
+By default, the program will look for a configuration file named `octoprint-deskop.json` in the user's home directory. This can be overriden with the command line argument `--config`, ie. `--config=/path/to/some.json`.
 
 The configuration file is a json file with the following format, any missing value is given the default below:
 
