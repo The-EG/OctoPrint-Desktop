@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=OctoPrint-Desktop
+Exec=octoprint-desktop
+Comment=OctoPrint Desktop Notifier
+Icon=octoprint-tentacle
+Type=Application

@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+G_SLICE=always-malloc valgrind --leak-check=yes --log-file=valgrind.log build/octoprint-desktop 
