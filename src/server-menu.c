@@ -359,11 +359,11 @@ static gboolean message_eval_cb(const GMatchInfo *info, GString *res, gpointer d
         if (g_hash_table_contains(menu->current_temps, var_name)) {
             OPDeskServerMenuTempData *temp = g_hash_table_lookup(menu->current_temps, var_name);
             if(g_strcmp0(var_detail,"actual")==0) {
-                val = g_strdup_printf("%0.1f", temp->actual);
+                val = g_strdup_printf("%0.0f", temp->actual);
             } else if(g_strcmp0(var_detail, "target")==0) {
-                val = g_strdup_printf("%0.1f", temp->target);
+                val = g_strdup_printf("%0.0f", temp->target);
             } else if(g_strcmp0(var_detail, "offset")==0) {
-                val = g_strdup_printf("%0.1f", temp->offset);
+                val = g_strdup_printf("%0.0f", temp->offset);
             } else {
                 g_warning("Unknown detail for temperature value, should be one of: actual, target, offset");
                 val = g_strdup("<unk-temp>");
