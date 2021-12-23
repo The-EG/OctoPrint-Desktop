@@ -38,7 +38,7 @@ The application can be added to the desktop environment's application menu by ed
 Once the desktop file is created, the DE can be configured to automatically start OctoPrint-Desktop on startup/login.
 
 # Configuration
-By default, the program will look for a configuration file named `octoprint-deskop.json` in the user's home directory. This can be overriden with the command line argument `--config`, ie. `--config=/path/to/some.json`.
+By default, the program will look for a configuration file named `op-deskop.json` in the user's home directory. This can be overriden with the command line argument `--config`, ie. `--config=/path/to/some.json`.
 
 The configuration file is a json file with the following format, any missing value is given the default below:
 
