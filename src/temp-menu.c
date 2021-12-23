@@ -118,10 +118,8 @@ static void opdesk_temp_menu_init(OPDeskTempMenu *temp_menu) {
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(temp_menu), temp_menu->sub_menu_root);
 }
 
-OPDeskTempMenu *opdesk_temp_menu_new(OctoPrintClient *client) {
-    return g_object_new(OPDESK_TYPE_TEMP_MENU, 
-        "client", client,
-        NULL);
+OPDeskTempMenu *opdesk_temp_menu_new() {
+    return g_object_new(OPDESK_TYPE_TEMP_MENU, NULL);
 }
 
 static void clear_menus_destroy_item(GtkWidget *widget, gpointer data) {

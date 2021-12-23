@@ -16,17 +16,14 @@
 // along with OctoPrint-Desktop.  If not, see <https://www.gnu.org/licenses/>.
 #pragma once
 #include <gtk/gtk.h>
-#include "octoprint/client.h"
 
-/* The temperature menu itself */
+#include "config.h"
+
 G_BEGIN_DECLS
 
-#define OPDESK_TYPE_TEMP_MENU (opdesk_temp_menu_get_type())
-G_DECLARE_FINAL_TYPE(OPDeskTempMenu, opdesk_temp_menu, OPDESK, TEMP_MENU, GtkMenuItem)
+#define OPDESK_TYPE_SERVER_MENU (opdesk_server_menu_get_type())
+G_DECLARE_FINAL_TYPE(OPDeskServerMenu, opdesk_server_menu, OPDESK, SERVER_MENU, GtkMenuItem)
 
-OPDeskTempMenu *opdesk_temp_menu_new();
-
-void opdesk_temp_menu_clear_menus(OPDeskTempMenu *temp_menu);
-void opdesk_temp_menu_build_menus(OPDeskTempMenu *temp_menu);
+OPDeskServerMenu *opdesk_server_menu_new(OPDeskConfig *config);
 
 G_END_DECLS

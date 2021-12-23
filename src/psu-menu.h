@@ -24,6 +24,6 @@ G_BEGIN_DECLS
 #define OPDESK_TYPE_PSU_MENU (opdesk_psu_menu_get_type())
 G_DECLARE_FINAL_TYPE(OPDeskPSUMenu, opdesk_psu_menu, OPDESK, PSU_MENU, GtkMenuItem)
 
-OPDeskPSUMenu *opdesk_psu_menu_new(OctoPrintClient *client, OctoPrintSocket *socket);
+OPDeskPSUMenu *opdesk_psu_menu_new();
 
 G_END_DECLS

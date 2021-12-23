@@ -34,6 +34,8 @@ set(OPD_SRCS
     src/temp-menu.h
     src/psu-menu.c
     src/psu-menu.h
+    src/server-menu.c
+    src/server-menu.h
 
     src/config.c
     src/config.h
@@ -47,4 +49,4 @@ set(OPD_SRCS
 add_executable(${CMAKE_PROJECT_NAME} ${OPD_SRCS})
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${GTK3_INCLUDE_DIRS} ${LIBSOUP_INCLUDE_DIRS} ${JSON_GLIB_INCLUDE_DIRS})
 target_link_directories(${CMAKE_PROJECT_NAME} PUBLIC ${GTK3_LIBRARY_DIRS} ${LIBSOUP_LIBRARY_DIRS} ${JSON_GLIB_LIBRARY_DIRS})
-target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${GTK_LIBRARIES} ${LIBSOUP_LIBRARIES} ${JSON_GLIB_LIBRARIES})
+target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC ${GTK3_LIBRARIES} ${LIBSOUP_LIBRARIES} ${JSON_GLIB_LIBRARIES})

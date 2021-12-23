@@ -128,11 +128,8 @@ static void opdesk_psu_menu_init(OPDeskPSUMenu *menu) {
     g_signal_connect(menu, "activate", G_CALLBACK(opdesk_psu_menu_activate), NULL);
 }
 
-OPDeskPSUMenu *opdesk_psu_menu_new(OctoPrintClient *client, OctoPrintSocket *socket) {
-    return g_object_new(OPDESK_TYPE_PSU_MENU, 
-        "client", client,
-        "socket", socket,
-        NULL);
+OPDeskPSUMenu *opdesk_psu_menu_new() {
+    return g_object_new(OPDESK_TYPE_PSU_MENU, NULL);
 }
 
 static void opdesk_psu_menu_socket_connected(OctoPrintSocket *socket, JsonObject *data, OPDeskPSUMenu *menu) {

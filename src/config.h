@@ -6,10 +6,7 @@ G_BEGIN_DECLS
 #define OPDESK_TYPE_CONFIG opdesk_config_get_type()
 G_DECLARE_FINAL_TYPE (OPDeskConfig, opdesk_config, OPDESK, CONFIG, GObject)
 
-OPDeskConfig *opdesk_config_new();
-OPDeskConfig *opdesk_config_new_from_file(const gchar *const file_path);
-
-gboolean opdesk_config_load_from_file(OPDeskConfig *config, const gchar *const file_path);
+GList *opdesk_config_load_from_file(const char *file_path);
 
 const char *opdesk_config_get_printer_name(OPDeskConfig *config);
 void opdesk_config_set_printer_name(OPDeskConfig *config, const char *printer_name);

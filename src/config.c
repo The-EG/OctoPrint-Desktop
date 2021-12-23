@@ -153,27 +153,9 @@ OPDeskConfig *opdesk_config_new() {
     return g_object_new(OPDESK_TYPE_CONFIG, NULL);
 }
 
-OPDeskConfig *opdesk_config_new_from_file(const gchar *const file_path) {
-    OPDeskConfig *config = opdesk_config_new();
-    opdesk_config_load_from_file(config, file_path);
-
-    return config;
-}
-
 #define load_if_present_string(a, b, c) if(json_object_has_member(a, b)) { g_free(c); c = g_strdup(json_object_get_string_member(a, b)); }
 
-gboolean opdesk_config_load_from_file(OPDeskConfig *config, const gchar *const file_path) {
-    GError *error = NULL;
-    JsonParser *parser = json_parser_new();
-
-    if(!json_parser_load_from_file(parser, file_path, &error)) {
-        g_critical("Couldn't load configuration from %s: %s", file_path, error->message);
-        return FALSE;
-    }
-
-    JsonNode *root = json_parser_get_root(parser);
-    JsonObject *conf = json_node_get_object(root);
-
+gboolean opdesk_config_load_from_json(OPDeskConfig *config, JsonObject *conf) {
     load_if_present_string(conf, "printerName", config->printer_name);
     load_if_present_string(conf, "octoprintURL", config->octoprint_url);
     load_if_present_string(conf, "apiKey", config->octoprint_api_key);
@@ -207,9 +189,48 @@ gboolean opdesk_config_load_from_file(OPDeskConfig *config, const gchar *const f
         g_list_free(event_ele_first);
     }
 
-    g_object_unref(parser);
+    
     
    return TRUE;
+}
+
+GList *opdesk_config_load_from_file(const char *file_path) {
+    GList *servers = NULL;
+
+    GError *error = NULL;
+    JsonParser *parser = json_parser_new();
+
+    if(!json_parser_load_from_file(parser, file_path, &error)) {
+        g_critical("Couldn't load configuration from %s: %s", file_path, error->message);
+        return FALSE;
+    }
+
+    JsonNode *root = json_parser_get_root(parser);
+
+    if(JSON_NODE_HOLDS_ARRAY(root)) {
+        JsonArray *arr = json_node_get_array(root);
+        GList *server_list = json_array_get_elements(arr);
+        GList *server = server_list;
+        while(server) {
+            OPDeskConfig *c = opdesk_config_new();
+            JsonObject *o = json_node_get_object(server->data);
+            opdesk_config_load_from_json(c, o);
+            servers = g_list_append(servers, c);
+            server = server->next;
+        }
+        g_list_free(server_list);
+    } else if (JSON_NODE_HOLDS_OBJECT(root)) {
+        OPDeskConfig *c = opdesk_config_new();
+        JsonObject *o = json_node_get_object(root);
+        opdesk_config_load_from_json(c, o);
+        servers = g_list_append(servers, c);
+    } else {
+        g_critical("Couldn't load configuration from %s: root node must be an array or object.", file_path);
+    }
+
+    g_object_unref(parser);
+
+    return servers;
 }
 
 #define change_and_emit(config, var, val, name) g_free(var); var = g_strdup(val); g_signal_emit(config, obj_signals[CHANGED], 0, name)
