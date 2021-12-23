@@ -148,5 +148,22 @@ The following variables are available:
 }
 ```
 
+# Multiple OctoPrint Servers
+Multiple OctoPrint servers can be monitored by supplying multiple server configurations in the config file. In this case, the top level node of the configuration should be an array instead of an object. For example:
+```json
+[
+    {
+        "printerName": "Ender 3 Pro",
+        "octoprintURL": "http://printerpi.local/ender-3-pro",
+        "apiKey": "anapikey"
+    },
+    {
+        "printerName": "Ender 3 v2",
+        "octoprintURL": "http://printerpi.local/ender-3-v2",
+        "apiKey": "anapikey"
+    }
+]
+```
+
 # OctoPrint Tentacle Icon
 The OctoPrint tentacle icon is copyright the OctoPrint Project and licensed under the AGLPv3 License. See https://github.com/OctoPrint/OctoPrint
