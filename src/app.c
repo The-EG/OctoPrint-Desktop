@@ -535,7 +535,7 @@ static void opdesk_app_activate(OPDeskApp *app, gpointer user_data) {
 static void opdesk_app_startup(OPDeskApp *app, gpointer user_data) {
     g_message("OctoPrint-Desktop Copyright © 2021 Taylor Talkington");
     g_message("This program comes with ABSOLUTELY NO WARRANTY; ");
-    g_message("for details see LICENSE or ");
+    g_message("for details see LICENSE");
     g_message("====================================================");
     g_message("      OctoPrint Desktop Application Startup         ");
     g_message("----------------------------------------------------");
