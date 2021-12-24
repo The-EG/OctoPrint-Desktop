@@ -170,6 +170,8 @@ static void opdesk_server_menu_update_status(OPDeskServerMenu *menu) {
     GtkWidget *lbl = gtk_bin_get_child(GTK_BIN(menu));
     gtk_label_set_markup(GTK_LABEL(lbl), menu->status_text);
 
+    g_signal_emit_by_name(menu, "status-updated");
+
     /*
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -235,6 +237,8 @@ static void opdesk_server_menu_class_init(OPDeskServerMenuClass *klass) {
     obj_properties[MENU_PROP_CONFIG] = g_param_spec_object("config", "config", "OctoPrint Server Config", OPDESK_TYPE_CONFIG, G_PARAM_READWRITE);
 
     g_object_class_install_properties (object_class, N_PROPERTIES, obj_properties);
+
+    g_signal_new("status-updated", G_TYPE_FROM_CLASS(object_class), G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS, 0, NULL, NULL, NULL, G_TYPE_NONE, 0, NULL);
 }
 
 static void on_reconnect_activate(GtkWidget *widget, OPDeskServerMenu *menu) {
@@ -637,4 +641,8 @@ static void opdesk_server_menu_setup_config(OPDeskServerMenu *menu) {
     g_object_set_property(G_OBJECT(menu->temp_menu), "client", &client);
 
     octoprint_socket_connect(menu->socket);
+}
+
+const char *opdesk_server_menu_get_status_markup(OPDeskServerMenu *menu) {
+    return menu->status_text;
 }

@@ -26,4 +26,6 @@ G_DECLARE_FINAL_TYPE(OPDeskServerMenu, opdesk_server_menu, OPDESK, SERVER_MENU, 
 
 OPDeskServerMenu *opdesk_server_menu_new(OPDeskConfig *config);
 
+const char *opdesk_server_menu_get_status_markup(OPDeskServerMenu *menu);
+
 G_END_DECLS

@@ -35,6 +35,7 @@ struct _OPDeskApp {
     GIcon *notification_icon;
 
     GtkWidget *menu_root;
+    GList *server_menus;
     GtkWidget *quit_mi;
 
     char *config_path;
@@ -61,6 +62,27 @@ static void on_tray_icon_click(GtkWidget *widget, OPDeskApp *app) {
 
 static void opdesk_app_activate(OPDeskApp *app, gpointer user_data) {
     
+}
+
+static void opdesk_app_server_status_updated(OPDeskServerMenu *menu, OPDeskApp *app) {
+    gint server_cnt = g_list_length(app->server_menus);
+    const char **statuses = g_malloc0_n(server_cnt+1, sizeof(char*));
+
+    GList *server = app->server_menus;
+    gint i = 0;
+    while(server) {
+        statuses[i++] = opdesk_server_menu_get_status_markup(server->data);
+        server = server->next;
+    }
+
+    char *new_status = g_strjoinv("\n\n", (char**)statuses);
+    g_free(statuses);
+
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    gtk_status_icon_set_tooltip_markup(GTK_STATUS_ICON(app->tray_icon), new_status);
+    #pragma GCC diagnostic pop
+    g_free(new_status);
 }
 
 static void opdesk_app_startup(OPDeskApp *app, gpointer user_data) {
@@ -108,6 +130,8 @@ static void opdesk_app_startup(OPDeskApp *app, gpointer user_data) {
     while(servers) {
         OPDeskServerMenu *smi = opdesk_server_menu_new(servers->data);
         gtk_menu_shell_append(GTK_MENU_SHELL(app->menu_root), GTK_WIDGET(smi));
+        g_signal_connect(smi, "status-updated", G_CALLBACK(opdesk_app_server_status_updated), app);
+        app->server_menus = g_list_append(app->server_menus, smi);
         servers = servers->next;
     }
     servers = g_list_first(servers);
@@ -157,6 +181,8 @@ static void opdesk_app_dispose(GObject *object) {
 
 static void opdesk_app_finalize(GObject *object) {
     OPDeskApp *self = OPDESK_APP_APPLICATION(object);
+    g_list_free(self->server_menus);
+    G_OBJECT_CLASS(opdesk_app_parent_class)->finalize(object);
 }
 
 static void opdesk_app_class_init(OPDeskAppClass *klass) {
