@@ -166,19 +166,10 @@ static void opdesk_server_menu_update_status(OPDeskServerMenu *menu) {
     g_free(menu->status_text);
     menu->status_text = new_status;
 
-    //gtk_menu_item_set_label(GTK_MENU_ITEM(menu), menu->status_text);
     GtkWidget *lbl = gtk_bin_get_child(GTK_BIN(menu));
     gtk_label_set_markup(GTK_LABEL(lbl), menu->status_text);
 
     g_signal_emit_by_name(menu, "status-updated");
-
-    /*
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    gtk_status_icon_set_tooltip_text(GTK_STATUS_ICON(app->tray_icon), app->status_text);
-    #pragma GCC diagnostic pop
-    gtk_menu_item_set_label(GTK_MENU_ITEM(app->tray_menu.label_item), app->status_text);
-    */
 }
 
 static void opdesk_server_menu_set_property(GObject *object, guint property_id, const GValue *value, GParamSpec *pspec) {
@@ -304,12 +295,6 @@ static void opdesk_server_menu_dispose_config(OPDeskServerMenu *menu) {
     GValue nv = G_VALUE_INIT;
     g_value_init(&nv, G_TYPE_OBJECT);
     g_value_set_object(&nv, NULL);
-
-    /*
-    if(menu->psu_menu) g_object_set_property(G_OBJECT(menu->psu_menu), "socket", &nv);
-    if(menu->psu_menu) g_object_set_property(G_OBJECT(menu->psu_menu), "client", &nv);
-    if(menu->temp_menu) g_object_set_property(G_OBJECT(menu->temp_menu), "client", &nv);
-    */
 
     menu->socket = NULL;
     menu->client = NULL;
