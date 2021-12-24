@@ -166,7 +166,9 @@ static void opdesk_server_menu_update_status(OPDeskServerMenu *menu) {
     g_free(menu->status_text);
     menu->status_text = new_status;
 
-    gtk_menu_item_set_label(GTK_MENU_ITEM(menu), menu->status_text);
+    //gtk_menu_item_set_label(GTK_MENU_ITEM(menu), menu->status_text);
+    GtkWidget *lbl = gtk_bin_get_child(GTK_BIN(menu));
+    gtk_label_set_markup(GTK_LABEL(lbl), menu->status_text);
 
     /*
     #pragma GCC diagnostic push
