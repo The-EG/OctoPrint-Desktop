@@ -48,6 +48,14 @@ struct _OPDeskServerMenu {
         gboolean ready;
     } state;
 
+    guint connected;
+    guint history;
+    guint current;
+    guint event;
+    guint plugin;
+    guint error;
+    guint disconnected;
+
     GtkWidget *submenu;
     GtkWidget *open_menu;
     GtkWidget *reconnect_menu;
@@ -285,7 +293,16 @@ static void opdesk_server_menu_dispose_config(OPDeskServerMenu *menu) {
     if(!menu->config) return;
     g_message("Shutting down server connection for %s", opdesk_config_get_printer_name(menu->config));
 
+    
+
     if (menu->socket) {
+        g_signal_handler_disconnect(menu->socket, menu->connected);
+        g_signal_handler_disconnect(menu->socket, menu->disconnected);
+        g_signal_handler_disconnect(menu->socket, menu->error);
+        g_signal_handler_disconnect(menu->socket, menu->current);
+        g_signal_handler_disconnect(menu->socket, menu->history);
+        g_signal_handler_disconnect(menu->socket, menu->plugin);
+        g_signal_handler_disconnect(menu->socket, menu->event);
         if(octoprint_socket_is_connected(menu->socket)) octoprint_socket_disconnect(menu->socket);
         g_object_unref(menu->socket);
     }
@@ -606,13 +623,13 @@ static void opdesk_server_menu_setup_config(OPDeskServerMenu *menu) {
     menu->client = octoprint_client_new(url, key);
     menu->socket = octoprint_socket_new(url);
 
-    g_signal_connect(menu->socket, "connected", G_CALLBACK(on_socket_connected), menu);
-    g_signal_connect(menu->socket, "disconnected", G_CALLBACK(on_socket_disconnected), menu);
-    g_signal_connect(menu->socket, "error", G_CALLBACK(on_socket_error), menu);
-    g_signal_connect(menu->socket, "history", G_CALLBACK(on_socket_current), menu);
-    g_signal_connect(menu->socket, "current", G_CALLBACK(on_socket_current), menu);
-    g_signal_connect(menu->socket, "plugin", G_CALLBACK(on_socket_plugin), menu);
-    g_signal_connect(menu->socket, "event", G_CALLBACK(on_socket_event), menu);
+    menu->connected = g_signal_connect(menu->socket, "connected", G_CALLBACK(on_socket_connected), menu);
+    menu->disconnected = g_signal_connect(menu->socket, "disconnected", G_CALLBACK(on_socket_disconnected), menu);
+    menu->error = g_signal_connect(menu->socket, "error", G_CALLBACK(on_socket_error), menu);
+    menu->history = g_signal_connect(menu->socket, "history", G_CALLBACK(on_socket_current), menu);
+    menu->current = g_signal_connect(menu->socket, "current", G_CALLBACK(on_socket_current), menu);
+    menu->plugin = g_signal_connect(menu->socket, "plugin", G_CALLBACK(on_socket_plugin), menu);
+    menu->event = g_signal_connect(menu->socket, "event", G_CALLBACK(on_socket_event), menu);
 
     GValue socket = G_VALUE_INIT;
     GValue client = G_VALUE_INIT;
